@@ -103,6 +103,9 @@ $tenantID,
 [parameter(Mandatory = $true)]
 [String]
 $ClientID,
+[parameter(Mandatory = $true)]
+[String]
+$redirectURL,
 [parameter(Mandatory = $false)]
 [String]
 $Scope = "User.ReadWrite.All offline_access",
@@ -140,7 +143,7 @@ Else
 
 $ScopeFixup = $Scope.replace(',','%20')
 $apiUri = "$($LogonURL)/$tenantID/oauth2/v2.0/token"
-$body = "client_id=$($ClientID)&scope=$($ScopeFixup)&refresh_token=$($Token)&redirect_uri=$($LogonURL)&grant_type=refresh_token&client_secret=$Secret"
+$body = "client_id=$($ClientID)&scope=$($ScopeFixup)&refresh_token=$($Token)&redirect_uri=$($redirectURL)&grant_type=refresh_token&client_secret=$Secret"
 
 write-verbose $body -Verbose
 $Refreshedtoken = (Invoke-RestMethod -Uri $apiUri -Method Post -ContentType 'application/x-www-form-urlencoded' -body $body )
